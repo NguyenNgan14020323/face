@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+	<!-- Latest compiled and minified CSS & JS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<script src="//code.jquery.com/jquery.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
+<body>
+	<%include header%>
+<div class="container">
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" role="dialog">
+	    <div class="modal-dialog">
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <h4 class="modal-title">Progress downloading</h4>
+	        </div>
+	        <div class="modal-body">
+			     <p id = "showpercent"></p>
+				 <div class="progress">
+					<div id = "progressdownload" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+						0%</div>
+					</div>
+	        </div>
+	      </div>
+		</div>
+	</div>
+
+	<div class="col-sm-6">
+	   <h3>Anh dep</h3>            
+		<img src="/image/22365563_1930857927166483_4334794998412523524_n.jpg" class="img-rounded" id = "showimage"  alt="Anh khong ton tai" style="height:auto;width:400px"></br>
+		</br><button type="button"  id = "buttonimage" class="btn btn-primary">Chon file</button>
+		
+		<form id="uploadFormimage" enctype="multipart/form-data" action="/uploadimage" method="post" >
+			<input type="file" name = "imageupload" style="display:none;" id="uploadimage">
+            <input type="submit" value="" id="submitbuttonimage" style="display: none;">
+        </form>
+	</div>
+	<div class="col-sm-6">	
+	   	<h3>Nhan dien</h3>            
+		<img src="/image/22365563_1930857927166483_4334794998412523524_n.jpg" class="img-rounded" id = "showimage"  alt="Anh khong ton tai" style="height:auto;width:200px"></br>
+		</br>
+		<p>Noi dung cua anh</p>
+	</div>    
+</div>
+<script src="/js/processimg.js"></script>
+</body>
+</html>
