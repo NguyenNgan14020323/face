@@ -45,6 +45,8 @@ router.route('/uploadimage')
                      info: data
                    };
 
+                   console.log(data);
+
                     res.send(JSON.stringify(data_response)) 
                
               });
@@ -91,6 +93,7 @@ router.route('/upload')
 	var name = req.body.name;
 	var id = 1;
 	var count = 0;
+	var countAll = 0;
   var url = config.baseUrl + 'persongroups/' + config.groupId + '/persons';
 
   // noinspection JSAnnotator
@@ -107,7 +110,7 @@ router.route('/upload')
         } else {
           id = 1;
         }
-        console.log(`Begin submit person: ${id} - ${name}`);
+        console.log(`Begin register person: ${id} - ${name}`);
         var resAPI = request('POST', url, {
           headers: {
             'Ocp-Apim-Subscription-Key': config.key
@@ -117,11 +120,12 @@ router.route('/upload')
             userData: id
           }
         });
+        countAll++;
         if (resAPI.statusCode == 200) {
           let person = JSON.parse(resAPI.getBody('utf8'));
           let personId = person.personId;
 
-          for (var i = 0; i < arr.length; i++){
+          for (let i = 0; i < arr.length; i++){
             cloudinary.uploader.upload("./public/image/"+ arr[i].originalname, function(result) {
               utils.sleep(4*1000);
               let url = config.baseUrl + 'persongroups/' + config.groupId + '/persons/' + personId + '/persistedFaces';
@@ -134,6 +138,7 @@ router.route('/upload')
                 }
               });
               if (resAPI.statusCode == 200) {
+                console.log('Done image ', i);
                 var newImage = new Image({
                   url : result.url,
                   name : req.body.name,
@@ -147,7 +152,7 @@ router.route('/upload')
                   }
                 });
                 ++count;
-                if (count == arr.length) {
+                if (count >= arr.length/2) {
                   url = config.baseUrl + '/persongroups/' + config.groupId + '/train';
                   resAPI = request('POST', url, {
                     headers: {
@@ -162,9 +167,15 @@ router.route('/upload')
                     });
                     console.log('training success');
                   } else {
-                    console.log('Error: ');
+                    console.log('training error');
+                  }
+                } else {
+                  if (countAll == arr.length) {
+                    console.log('not enough image');
                   }
                 }
+              } else {
+                console.error('Error submit image ', i);
               }
             });
             fs.unlink("./public/image/"+ arr[i].originalname, function (err) {
@@ -175,6 +186,8 @@ router.route('/upload')
           if(chk){
             res.redirect('/upload');
           }
+        } else {
+          console.error('Register error: ', resAPI.getBody('utf8'));
         }
       }
     });

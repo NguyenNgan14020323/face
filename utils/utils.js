@@ -3,12 +3,10 @@ var request = require('sync-request');
 var Person = require('../models/person');
 
 function sleep(time) {
-  console.log('Begin Sleep');
   var stop = new Date().getTime();
   while (new Date().getTime() < stop + time) {
     ;
   }
-  console.log('End Sleep');
 }
 
 function detect(imageUrl) {
@@ -57,18 +55,15 @@ function recognize(imageUrl, cb) {
   console.log(`Begin to recognize image: ${imageUrl}`);
   var detectedFaces = detect(imageUrl);
 
-  if (detectedFaces.length == 0) {
+  if (!detectedFaces || detectedFaces.length == 0) {
     console.log("Can't detect any face");
     return;
   }
 
-  // Sau khi đã phát hiện các khuôn mặt,
-  // So sánh chúng với mặt đã có trong person group
   var identifiedResult = identify(detectedFaces.map(face => face.faceId));
 
   var allIdols = identifiedResult.map(result => {
 
-    // Lấy vị trí khuôn mặt trong ảnh để hiển thị
     result.face = detectedFaces.filter(face => face.faceId == result.faceId)[0].faceRectangle;
 
     return result;
@@ -80,7 +75,7 @@ function recognize(imageUrl, cb) {
       Person.find({personId: item.candidates[0].personId}, (err, data) => {
         if (err) throw console.error(err);
         ++count;
-        if (data) {
+        if (data[0]) {
           dataResult.push({
             face: item.face,
             name: data[0].name
