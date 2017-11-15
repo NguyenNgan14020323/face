@@ -3,6 +3,7 @@ var Upload_image = document.getElementById("uploadimage")
 var Upload_any_thing_table_image = document.getElementById("buttonimage")
 var max_file_size_image = 500000*1024*1024
 var progress_download = document.getElementById("progressdownload")
+const const_width = 500;
 
 function TypeofFile(val)
 {
@@ -51,7 +52,7 @@ document.getElementById("uploadFormimage").onsubmit = function(event)
             console.log("da chay thanh cong")
         else
            	console.log("xay ra loi khong xac dinh. Sorry!!!")
-		    $('#myModal').modal('hide');
+		 $('#myModal').modal('hide');
     };
 	//phuong thuc post
 	
@@ -63,7 +64,16 @@ document.getElementById("uploadFormimage").onsubmit = function(event)
 			   progress_download.innerHTML = parseInt(calculate) + "%"
 		//  }, 150)
 		  progress_download.style.width = calculate +"%"
-          console.log(calculate);
+        if(calculate == 100){
+         setTimeout(function(){
+            $('#myModal').modal('hide');
+         }, 1000)
+
+         setTimeout(function(){
+            $('#myModal123').modal('show');
+         }, 1500)
+            
+        }
       }
     }, false);
 	
@@ -91,26 +101,22 @@ document.getElementById("uploadFormimage").onsubmit = function(event)
         if(xhr.readyState == 4 && xhr.status == 200){
         	var data_response = JSON.parse(xhr.responseText);
 		   document.getElementById("showimage").src = data_response.url;
+         var origin_width = data_response.image_width, 
+             origin_heigh = data_response.image_height;
 
-        var img1 = new Image(), origin_width, origin_heigh ;
-
-        img1.onload = function(){
+      /*  img1.onload = function(){
             origin_width = img1.width;//nham no viet hoa 
             origin_heigh = img1.height;
-            console.log("chieu dai anh ban dau " + origin_width)
             // code here to use the dimensions
         }
-        img1.src = data_response.url;
-
-
+        img1.src = data_response.url; */
 
          setTimeout(function(){
-
+             $('#myModal123').modal('hide');
             var c = document.getElementById("myCanvas");
             c.style.display = "block";
             var ctx = c.getContext("2d");
             var img = document.getElementById("showimage");
-            console.log(img.src)
             ctx.drawImage(img, data_response.info[0].face.left, data_response.info[0].face.top, data_response.info[0].face.width, data_response.info[0].face.height, 0, 0, 150, 150);
             document.getElementById('noidung').innerHTML = data_response.info[0].name;
             document.getElementById("showimage").style.height = "auto"
@@ -118,15 +124,15 @@ document.getElementById("uploadFormimage").onsubmit = function(event)
             document.getElementById("showimage").style.width = "500px"
             var frame_face = document.getElementById("frame-face")
             frame_face.style.position = 'absolute';
-            frame_face.style.left = (data_response.info[0].face.left*500)/origin_width + "px"
-            frame_face.style.top = (data_response.info[0].face.top*500)/origin_width + "px"
-            frame_face.style.height = data_response.info[0].face.height*500/origin_width+ "px"
-            frame_face.style.width = (data_response.info[0].face.width*500)/origin_width + "px"
+            frame_face.style.left = (data_response.info[0].face.left*const_width )/origin_width + "px"
+            frame_face.style.top = (data_response.info[0].face.top*const_width )/origin_width + "px"
+            frame_face.style.height = data_response.info[0].face.height*const_width /origin_width+ "px"
+            frame_face.style.width = (data_response.info[0].face.width*const_width )/origin_width + "px"
             $(document).ready(function(){
                 $('#frame-face').tooltip({title: data_response.info[0].name}); 
             });
             
-         }, 3000)
+         }, 2000)
          
         }
     }
@@ -154,3 +160,103 @@ Upload_image.addEventListener("change", function(){
 Upload_any_thing_table_image.addEventListener("click", function(){
 	Upload_image.click();
 })
+
+function Upload_data_camera_img(img_base_64, callback)
+{
+    $.ajax({
+        type: "POST",
+        url: "/upload/camera",
+        data:{upload_camera_image: img_base_64},
+        success: function(data)//hien thi message
+        {
+            if(typeof callback == "function")
+                callback(data);//tra ve du lieu
+        }
+    })
+}
+
+var Upload_any_thing_table_camera = document.getElementById("buttonimage1")
+
+//chụp ảnh bằng camera
+// Elements for taking the snapshot
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+var video = document.getElementById('video');
+var localstream;//dung de tắt camera
+Upload_any_thing_table_camera.addEventListener("click", function(){
+  $('#myModal50600').modal('show');
+
+    // Trigger photo take
+  document.getElementById("snap").addEventListener("click", function() {
+    video.style.display = "none"
+    context.drawImage(video, 0, 0, 640, 640);
+    canvas.style.display = "block"
+    video.pause()
+  });
+  
+  //Restart take photo
+  document.getElementById("restart").addEventListener("click", function() {
+    video.style.display = "block"
+    canvas.style.display = "none"
+    video.play()
+  });
+
+  // Get access to the camera!
+  if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    // Not adding `{ audio: true }` since we only want video now
+    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+      video.src = window.URL.createObjectURL(stream);
+        localstream = stream
+        video.play();
+    });
+  }
+})
+
+//click nut x hoac button close tren modal chup camrera
+$('#myModal50600').on('hidden.bs.modal', function () {
+    localstream.getTracks()[0].stop();//tat camera
+})
+
+//bat su kien nguoi dung chup xong va gui anh len server
+document.getElementById("photographdone").addEventListener("click", function() {
+  var dataURL = canvas.toDataURL("image/png");//danh dinh dang png
+  video.src = ""
+  localstream.getTracks()[0].stop()
+  
+  //an modal
+  $('#myModal50600').modal('hide');
+
+  setTimeout(function(){
+   $('#myModal123').modal('show');
+  }, 1000)
+
+  //ajax upload data img
+  Upload_data_camera_img(dataURL, function(data){
+     var data_response = JSON.parse(data)
+     document.getElementById("showimage").src = data_response.url;
+     var origin_width = data_response.image_width, origin_heigh = data_response.image_height;
+
+      setTimeout(function(){
+         $('#myModal123').modal('hide');
+         var c = document.getElementById("myCanvas");
+         c.style.display = "block";
+         var ctx = c.getContext("2d");
+         var img = document.getElementById("showimage");
+         ctx.drawImage(img, data_response.info[0].face.left, data_response.info[0].face.top, data_response.info[0].face.width, data_response.info[0].face.height, 0, 0, 150, 150);
+         document.getElementById('noidung').innerHTML = data_response.info[0].name;
+         document.getElementById("showimage").style.height = "auto"
+            
+         document.getElementById("showimage").style.width = "500px"
+         var frame_face = document.getElementById("frame-face")
+         frame_face.style.position = 'absolute';
+         frame_face.style.left = (data_response.info[0].face.left*const_width )/origin_width + "px"
+         frame_face.style.top = (data_response.info[0].face.top*const_width )/origin_width + "px"
+         frame_face.style.height = data_response.info[0].face.height*const_width /origin_width+ "px"
+         frame_face.style.width = (data_response.info[0].face.width*const_width )/origin_width + "px"
+         $(document).ready(function(){
+            $('#frame-face').tooltip({title: data_response.info[0].name}); 
+         });  
+      }, 2000)
+               
+  })
+});

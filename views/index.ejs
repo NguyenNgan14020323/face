@@ -6,10 +6,44 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<script src="//code.jquery.com/jquery.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 	<%include header%>
 <div class="container">
+	<div id="myModal50600" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3 class="modal-title" style="text-align: center;">Chụp ảnh của bạn</h3>
+          </div>
+
+          <div class="modal-body">
+			   <video id="video" width="640" height="640" autoplay></video></br>
+			   <canvas id="canvas" width="640" height="640" style="display:none;"></canvas></br>
+            <div>
+               <table>
+                  <tr>
+			            <td><button class="btn btn-primary" id="snap">Take Photo</button></br></td>
+			            <td><button  class="btn btn-info" id="restart" style="margin-left: 30%;">Restart</button></br></td>
+                  </tr>
+               </table>
+            </div>
+			
+          </div>
+          <div class="modal-footer">
+		       <button type="button" class="btn btn-success" id = "photographdone">Done</button>
+             <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
+			
+          </div>
+       </div>
+
+      </div>
+    </div>
+
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" role="dialog">
 	    <div class="modal-dialog">
@@ -29,6 +63,23 @@
 		</div>
 	</div>
 
+	<!-- Modal -->
+	<div class="modal fade" id="myModal123" role="dialog">
+	    <div class="modal-dialog">
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <h4 class="modal-title">Dang tien hanh xu li</h4>
+	        </div>
+	        <div class="modal-body">
+			   <ul class="fa-ul">
+				 <li><i class="fa-li fa fa-spinner fa-spin"></i>..............</li>
+	 			</ul>
+	        </div>
+	      </div>
+		</div>
+	</div>
+
 	<div class="col-sm-6">
 	   <h3>Anh dep</h3>  
 
@@ -38,7 +89,8 @@
 			<div id="frame-face" style="position: absolute;border: 1px solid red;" >
 			</div>
 		</div>
-		</br><button type="button"  style="position: absolute;" id = "buttonimage" class="btn btn-primary">Chon file</button>
+		</br><button type="button"  style="position: absolute;margin-top: 400px;" id = "buttonimage" class="btn btn-primary">Chon file</button>
+	</br><button type="button"  style="position: absolute;margin-top: 420px;" id = "buttonimage1" class="btn btn-primary">Chup camera</button>
 		
 		<form id="uploadFormimage" enctype="multipart/form-data" action="/uploadimage" method="post" >
 			<input type="file" name = "imageupload" style="display:none;" id="uploadimage">

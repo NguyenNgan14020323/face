@@ -19,6 +19,49 @@ router.route('/')//dieu huong app
    res.status(200).render("index", {})
 })
 
+//make random name file
+function make_png_file()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 30; i++ )//ten file anh co ngau nhien 30 ki tu
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
+//upload iamge take by camera
+router.route('/upload/camera')
+.post(function(req, res)
+{
+  if(req.body){
+    var base64Data = req.body.upload_camera_image.replace(/^data:image\/png;base64,/, "");
+        var dirname = path.resolve(__dirname, "..");
+    var pathsave = dirname + "/public/image/" + make_png_file() + ".png"
+    //console.log(dirname)
+    
+    fs.writeFile(pathsave, base64Data, 'base64', function(err) {
+      if(err)
+        throw err
+
+        cloudinary.uploader.upload(pathsave, function(result) {
+           utils.recognize(result.url, (data) => {
+               var data_response = {
+                  url: result.url, 
+                  image_height: result.height,
+                  image_width: result.width,
+                  info: data
+               };
+               res.send(JSON.stringify(data_response)) 
+               fs.unlinkSync(pathsave); 
+          });
+        });
+    });
+  }
+  
+})
+
 router.route('/uploadimage')
 .post(multipartMiddleware, function(req, res){
   var a;
@@ -38,17 +81,18 @@ router.route('/uploadimage')
           		   		return res.end("Error uploading file.");
         		  	}
       	 		});
-      	 		cloudinary.uploader.upload("./public/image/"+ imageName, function(result) {
+
+      	 		cloudinary.uploader.upload(newPath, function(result) {
                utils.recognize(result.url, (data) => {
                    var data_response = {
                      url: result.url, 
+                     image_height: result.height,
+                     image_width: result.width,
                      info: data
                    };
-
-                   console.log(data);
-
-                    res.send(JSON.stringify(data_response)) 
-               
+                   res.send(JSON.stringify(data_response)) 
+                   //xoa file
+                  fs.unlinkSync(newPath);
               });
       	 		});
     		}
