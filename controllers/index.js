@@ -21,6 +21,7 @@ router.route('/')//dieu huong app
 
 router.route('/uploadimage')
 .post(multipartMiddleware, function(req, res){
+  var a;
 	if(req.files){
 		fs.readFile(req.files.imageupload.path, function (err, data)
       	{
@@ -38,11 +39,16 @@ router.route('/uploadimage')
         		  	}
       	 		});
       	 		cloudinary.uploader.upload("./public/image/"+ imageName, function(result) {
-              utils.recognize(result.url, (data) => {
-                console.log(JSON.stringify(data));
+               utils.recognize(result.url, (data) => {
+                   var data_response = {
+                     url: result.url, 
+                     info: data
+                   };
+
+                    res.send(JSON.stringify(data_response)) 
+               
               });
       	 		});
-      	 		res.send(JSON.stringify(response_path))
     		}
 
       	})

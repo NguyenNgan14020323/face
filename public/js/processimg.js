@@ -90,11 +90,21 @@ document.getElementById("uploadFormimage").onsubmit = function(event)
     	//State = 4 is request finished and response is ready, xhr.status == 200 is 200: "OK"
         if(xhr.readyState == 4 && xhr.status == 200){
         	var data_response = JSON.parse(xhr.responseText);
-                console.log(xhr.responseText);
-				document.getElementById("showimage").src = data_response
-				document.getElementById("showimage").style.height = "500px"
-				document.getElementById("showimage").style.width = "500px"
-				
+		   document.getElementById("showimage").src = data_response.url;
+
+         setTimeout(function(){
+            var c = document.getElementById("myCanvas");
+            c.style.display = "block";
+            var ctx = c.getContext("2d");
+            var img = document.getElementById("showimage");
+            console.log(img.src)
+            ctx.drawImage(img, data_response.info[0].face.left, data_response.info[0].face.top, data_response.info[0].face.width, data_response.info[0].face.height, 0, 0, 150, 150);
+            document.getElementById('noidung').innerHTML = data_response.info[0].name;
+            document.getElementById("showimage").style.height = "auto"
+            document.getElementById("showimage").style.width = "500px"
+            
+         }, 1000)
+         
         }
     }
 }

@@ -30,7 +30,7 @@
 	</div>
 
 	<div class="col-sm-6">
-	   <h3>Anh dep</h3>            
+	   <h3>Anh dep</h3>  
 		<img src="/image/22365563_1930857927166483_4334794998412523524_n.jpg" class="img-rounded" id = "showimage"  alt="Anh khong ton tai" style="height:auto;width:400px"></br>
 		</br><button type="button"  id = "buttonimage" class="btn btn-primary">Chon file</button>
 		
@@ -41,9 +41,11 @@
 	</div>
 	<div class="col-sm-6">	
 	   	<h3>Nhan dien</h3>            
-		<img src="/image/22365563_1930857927166483_4334794998412523524_n.jpg" class="img-rounded" id = "showimage"  alt="Anh khong ton tai" style="height:auto;width:200px"></br>
+		<!-- <img src="/image/22365563_1930857927166483_4334794998412523524_n.jpg" class="img-rounded" id = "showimage"  alt="Anh khong ton tai" style="height:auto;width:200px"></br> -->
+		<canvas id="myCanvas" class="img-rounded" width="150" height="150" style="display: none; border:1px solid #d3d3d3;">
+		Your browser does not support the HTML5 canvas tag.</canvas>   
 		</br>
-		<p>Noi dung cua anh</p>
+		<p id="noidung"></p>
 	</div>    
 </div>
 <script src="/js/processimg.js"></script>
