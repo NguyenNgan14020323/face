@@ -92,7 +92,20 @@ document.getElementById("uploadFormimage").onsubmit = function(event)
         	var data_response = JSON.parse(xhr.responseText);
 		   document.getElementById("showimage").src = data_response.url;
 
+        var img1 = new Image(), origin_width, origin_heigh ;
+
+        img1.onload = function(){
+            origin_width = img1.width;//nham no viet hoa 
+            origin_heigh = img1.height;
+            console.log("chieu dai anh ban dau " + origin_width)
+            // code here to use the dimensions
+        }
+        img1.src = data_response.url;
+
+
+
          setTimeout(function(){
+
             var c = document.getElementById("myCanvas");
             c.style.display = "block";
             var ctx = c.getContext("2d");
@@ -101,9 +114,19 @@ document.getElementById("uploadFormimage").onsubmit = function(event)
             ctx.drawImage(img, data_response.info[0].face.left, data_response.info[0].face.top, data_response.info[0].face.width, data_response.info[0].face.height, 0, 0, 150, 150);
             document.getElementById('noidung').innerHTML = data_response.info[0].name;
             document.getElementById("showimage").style.height = "auto"
-            document.getElementById("showimage").style.width = "500px"
             
-         }, 1000)
+            document.getElementById("showimage").style.width = "500px"
+            var frame_face = document.getElementById("frame-face")
+            frame_face.style.position = 'absolute';
+            frame_face.style.left = (data_response.info[0].face.left*500)/origin_width + "px"
+            frame_face.style.top = (data_response.info[0].face.top*500)/origin_width + "px"
+            frame_face.style.height = data_response.info[0].face.height*500/origin_width+ "px"
+            frame_face.style.width = (data_response.info[0].face.width*500)/origin_width + "px"
+            $(document).ready(function(){
+                $('#frame-face').tooltip({title: data_response.info[0].name}); 
+            });
+            
+         }, 3000)
          
         }
     }
