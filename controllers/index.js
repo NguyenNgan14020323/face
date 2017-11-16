@@ -212,6 +212,13 @@ router.route('/upload')
                       name
                     });
                     console.log('training success');
+                    fs.unlink("./public/image/"+ arr[i].originalname, function (err) {
+                      if (err) throw err;
+                      console.log('File deleted!');
+                    });
+                    if(chk){
+                      res.redirect('/upload');
+                    }
                   } else {
                     console.log('training error');
                   }
@@ -224,13 +231,7 @@ router.route('/upload')
                 console.error('Error submit image ', i);
               }
             });
-            fs.unlink("./public/image/"+ arr[i].originalname, function (err) {
-              if (err) throw err;
-              console.log('File deleted!');
-            });
-          }
-          if(chk){
-            res.redirect('/upload');
+
           }
         } else {
           console.error('Register error: ', resAPI.getBody('utf8'));
