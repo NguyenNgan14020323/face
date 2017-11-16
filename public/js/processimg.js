@@ -136,10 +136,9 @@ document.getElementById("uploadFormimage").onsubmit = function(event)
                    $(document).ready(function(){
                       $('#frame-face' + i).tooltip({title: data_response.info[i].name}); 
                    });
-                   
-               }            
+                 }
             
-            }, 2000)
+            }, 3000)
          
           }else{
             $('#myModal123').modal('hide');
