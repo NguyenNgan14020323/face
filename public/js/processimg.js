@@ -100,41 +100,54 @@ document.getElementById("uploadFormimage").onsubmit = function(event)
     	//State = 4 is request finished and response is ready, xhr.status == 200 is 200: "OK"
         if(xhr.readyState == 4 && xhr.status == 200){
         	var data_response = JSON.parse(xhr.responseText);
-		   document.getElementById("showimage").src = data_response.url;
-         var origin_width = data_response.image_width, 
-             origin_heigh = data_response.image_height;
 
-      /*  img1.onload = function(){
-            origin_width = img1.width;//nham no viet hoa 
-            origin_heigh = img1.height;
-            // code here to use the dimensions
-        }
-        img1.src = data_response.url; */
+         //phat hien dk mat mguoi
+         if(data_response.info != ""){
 
-         setTimeout(function(){
-             $('#myModal123').modal('hide');
-            var c = document.getElementById("myCanvas");
-            c.style.display = "block";
-            var ctx = c.getContext("2d");
-            var img = document.getElementById("showimage");
-            ctx.drawImage(img, data_response.info[0].face.left, data_response.info[0].face.top, data_response.info[0].face.width, data_response.info[0].face.height, 0, 0, 150, 150);
-            document.getElementById('noidung').innerHTML = data_response.info[0].name;
-            document.getElementById("showimage").style.height = "auto"
+		      document.getElementById("showimage").src = data_response.url;
+            var origin_width = data_response.image_width, 
+               origin_heigh = data_response.image_height;
+
+         /*  img1.onload = function(){
+               origin_width = img1.width;//nham no viet hoa 
+               origin_heigh = img1.height;
+               // code here to use the dimensions
+            }
+            img1.src = data_response.url; */
+
+            setTimeout(function(){
+               $('#myModal123').modal('hide');
+             
+               var img = document.getElementById("showimage");
+                document.getElementById("showimage").style.height = "auto"
+               document.getElementById("showimage").style.width = "500px"
+               for(var i = 0; i < data_response.info.length; i++){
+                  var c = document.getElementById("myCanvas" + i);
+                   c.style.display = "block";
+                   var ctx = c.getContext("2d");
+                    ctx.drawImage(img, data_response.info[i].face.left, data_response.info[i].face.top, data_response.info[i].face.width, data_response.info[i].face.height, 0, 0, 150, 150);
+                   var frame_face = document.getElementById("frame-face" + i)
+                   frame_face.style.position = 'absolute';
+                   frame_face.style.left = (data_response.info[i].face.left*const_width )/origin_width + "px"
+                   frame_face.style.top = (data_response.info[i].face.top*const_width )/origin_width + "px"
+                   frame_face.style.height = data_response.info[i].face.height*const_width /origin_width+ "px"
+                   frame_face.style.width = (data_response.info[i].face.width*const_width )/origin_width + "px"
+                   document.getElementById('noidung' + i).innerHTML = data_response.info[i].name;
+                   $(document).ready(function(){
+                      $('#frame-face' + i).tooltip({title: data_response.info[i].name}); 
+                   });
+                   
+               }            
             
-            document.getElementById("showimage").style.width = "500px"
-            var frame_face = document.getElementById("frame-face")
-            frame_face.style.position = 'absolute';
-            frame_face.style.left = (data_response.info[0].face.left*const_width )/origin_width + "px"
-            frame_face.style.top = (data_response.info[0].face.top*const_width )/origin_width + "px"
-            frame_face.style.height = data_response.info[0].face.height*const_width /origin_width+ "px"
-            frame_face.style.width = (data_response.info[0].face.width*const_width )/origin_width + "px"
-            $(document).ready(function(){
-                $('#frame-face').tooltip({title: data_response.info[0].name}); 
-            });
-            
-         }, 2000)
+            }, 2000)
          
-        }
+          }else{
+            $('#myModal123').modal('hide');
+            setTimeout(function(){
+               alert("Can not detect any face.")
+            }, 500) 
+          }
+       }
     }
 }
 
@@ -183,8 +196,17 @@ var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 var video = document.getElementById('video');
 var localstream;//dung de tắt camera
+var take_image = false;
+
+var count_num_click = 0;
 Upload_any_thing_table_camera.addEventListener("click", function(){
   $('#myModal50600').modal('show');
+  count_num_click++;
+
+  if(count_num_click > 1){
+    video.style.display = "block"
+     canvas.style.display = "none"
+  }
 
     // Trigger photo take
   document.getElementById("snap").addEventListener("click", function() {
@@ -192,6 +214,7 @@ Upload_any_thing_table_camera.addEventListener("click", function(){
     context.drawImage(video, 0, 0, 640, 640);
     canvas.style.display = "block"
     video.pause()
+    take_image = true;
   });
   
   //Restart take photo
@@ -199,13 +222,14 @@ Upload_any_thing_table_camera.addEventListener("click", function(){
     video.style.display = "block"
     canvas.style.display = "none"
     video.play()
+    take_image = false;
   });
 
   // Get access to the camera!
   if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     // Not adding `{ audio: true }` since we only want video now
     navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-      video.src = window.URL.createObjectURL(stream);
+       video.src = window.URL.createObjectURL(stream);
         localstream = stream
         video.play();
     });
@@ -214,49 +238,63 @@ Upload_any_thing_table_camera.addEventListener("click", function(){
 
 //click nut x hoac button close tren modal chup camrera
 $('#myModal50600').on('hidden.bs.modal', function () {
+    console.log(" you turned off camera")
     localstream.getTracks()[0].stop();//tat camera
+    take_image = false;
 })
 
 //bat su kien nguoi dung chup xong va gui anh len server
 document.getElementById("photographdone").addEventListener("click", function() {
-  var dataURL = canvas.toDataURL("image/png");//danh dinh dang png
-  video.src = ""
-  localstream.getTracks()[0].stop()
-  
-  //an modal
-  $('#myModal50600').modal('hide');
+ if(take_image){
+   var dataURL = canvas.toDataURL("image/png");//danh dinh dang png
+   video.src = ""
+   localstream.getTracks()[0].stop()
+   //an modal
+   $('#myModal50600').modal('hide');
 
-  setTimeout(function(){
-   $('#myModal123').modal('show');
-  }, 1000)
+   setTimeout(function(){
+      $('#myModal123').modal('show');
+    }, 1000)
 
   //ajax upload data img
-  Upload_data_camera_img(dataURL, function(data){
-     var data_response = JSON.parse(data)
-     document.getElementById("showimage").src = data_response.url;
-     var origin_width = data_response.image_width, origin_heigh = data_response.image_height;
+    Upload_data_camera_img(dataURL, function(data){
+      var data_response = JSON.parse(data)
 
-      setTimeout(function(){
+     if(data_response.info != ""){
+         document.getElementById("showimage").src = data_response.url;
+         var origin_width = data_response.image_width, origin_heigh = data_response.image_height;
+
+         setTimeout(function(){
+            $('#myModal123').modal('hide');
+              var img = document.getElementById("showimage");
+               document.getElementById("showimage").style.height = "auto"
+               document.getElementById("showimage").style.width = "500px"
+               for(var i = 0; i < data_response.info.length; i++){
+                  var c = document.getElementById("myCanvas" + i);
+                   c.style.display = "block";
+                   var ctx = c.getContext("2d");
+                   ctx.drawImage(img, data_response.info[i].face.left, data_response.info[i].face.top, data_response.info[i].face.width, data_response.info[i].face.height, 0, 0, 150, 150);
+                   var frame_face = document.getElementById("frame-face" + i)
+                   frame_face.style.position = 'absolute';
+                   frame_face.style.left = (data_response.info[i].face.left*const_width )/origin_width + "px"
+                   frame_face.style.top = (data_response.info[i].face.top*const_width )/origin_width + "px"
+                   frame_face.style.height = data_response.info[i].face.height*const_width /origin_width+ "px"
+                   frame_face.style.width = (data_response.info[i].face.width*const_width )/origin_width + "px"
+                   document.getElementById('noidung' + i).innerHTML = data_response.info[i].name;
+                   $(document).ready(function(){
+                      $('#frame-face' + i).tooltip({title: data_response.info[i].name}); 
+                   });
+                   
+               }    
+          }, 15000)
+       }else{
          $('#myModal123').modal('hide');
-         var c = document.getElementById("myCanvas");
-         c.style.display = "block";
-         var ctx = c.getContext("2d");
-         var img = document.getElementById("showimage");
-         ctx.drawImage(img, data_response.info[0].face.left, data_response.info[0].face.top, data_response.info[0].face.width, data_response.info[0].face.height, 0, 0, 150, 150);
-         document.getElementById('noidung').innerHTML = data_response.info[0].name;
-         document.getElementById("showimage").style.height = "auto"
-            
-         document.getElementById("showimage").style.width = "500px"
-         var frame_face = document.getElementById("frame-face")
-         frame_face.style.position = 'absolute';
-         frame_face.style.left = (data_response.info[0].face.left*const_width )/origin_width + "px"
-         frame_face.style.top = (data_response.info[0].face.top*const_width )/origin_width + "px"
-         frame_face.style.height = data_response.info[0].face.height*const_width /origin_width+ "px"
-         frame_face.style.width = (data_response.info[0].face.width*const_width )/origin_width + "px"
-         $(document).ready(function(){
-            $('#frame-face').tooltip({title: data_response.info[0].name}); 
-         });  
-      }, 2000)
-               
-  })
+         setTimeout(function(){
+            alert("Can not detect any face.")
+         }, 500) 
+       }     
+     })
+     take_image = false;
+   }else
+      alert("Please catch your image.")
 });
