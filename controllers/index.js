@@ -165,7 +165,6 @@ router.route('/upload')
             userData: id
           }
         });
-        countAll++;
         if (resAPI.statusCode == 200) {
           let person = JSON.parse(resAPI.getBody('utf8'));
           let personId = person.personId;
@@ -182,6 +181,7 @@ router.route('/upload')
                   url: result.url
                 }
               });
+              countAll++;
               if (resAPI.statusCode == 200) {
                 console.log('Done image ', i);
                 var newImage = new Image({
@@ -197,7 +197,8 @@ router.route('/upload')
                   }
                 });
                 ++count;
-                if (count >= arr.length/2) {
+                console.log(countAll);
+                if (count >= arr.length/2 && countAll === arr.length) {
                   url = config.baseUrl + '/persongroups/' + config.groupId + '/train';
                   resAPI = request('POST', url, {
                     headers: {
