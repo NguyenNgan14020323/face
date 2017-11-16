@@ -117,26 +117,28 @@ document.getElementById("uploadFormimage").onsubmit = function(event)
 
             setTimeout(function(){
                $('#myModal123').modal('hide');
-               var c = document.getElementById("myCanvas");
-               c.style.display = "block";
-               var ctx = c.getContext("2d");
+             
                var img = document.getElementById("showimage");
-               ctx.drawImage(img, data_response.info[0].face.left, data_response.info[0].face.top, data_response.info[0].face.width, data_response.info[0].face.height, 0, 0, 150, 150);
-               document.getElementById('noidung').innerHTML = data_response.info[0].name;
-               document.getElementById("showimage").style.height = "auto"
-            
+                document.getElementById("showimage").style.height = "auto"
                document.getElementById("showimage").style.width = "500px"
-               var frame_face = document.getElementById("frame-face")
-               frame_face.style.position = 'absolute';
-               frame_face.style.left = (data_response.info[0].face.left*const_width )/origin_width + "px"
-               frame_face.style.top = (data_response.info[0].face.top*const_width )/origin_width + "px"
-               frame_face.style.height = data_response.info[0].face.height*const_width /origin_width+ "px"
-               frame_face.style.width = (data_response.info[0].face.width*const_width )/origin_width + "px"
-               $(document).ready(function(){
-                  $('#frame-face').tooltip({title: data_response.info[0].name}); 
-               });
+               for(var i = 0; i < data_response.info.length; i++){
+                  var c = document.getElementById("myCanvas" + i);
+                   c.style.display = "block";
+                   var ctx = c.getContext("2d");
+                    ctx.drawImage(img, data_response.info[i].face.left, data_response.info[i].face.top, data_response.info[i].face.width, data_response.info[i].face.height, 0, 0, 150, 150);
+                   var frame_face = document.getElementById("frame-face" + i)
+                   frame_face.style.position = 'absolute';
+                   frame_face.style.left = (data_response.info[i].face.left*const_width )/origin_width + "px"
+                   frame_face.style.top = (data_response.info[i].face.top*const_width )/origin_width + "px"
+                   frame_face.style.height = data_response.info[i].face.height*const_width /origin_width+ "px"
+                   frame_face.style.width = (data_response.info[i].face.width*const_width )/origin_width + "px"
+                   document.getElementById('noidung' + i).innerHTML = data_response.info[i].name;
+                   $(document).ready(function(){
+                      $('#frame-face' + i).tooltip({title: data_response.info[i].name}); 
+                   });
+                 }
             
-            }, 2000)
+            }, 3000)
          
           }else{
             $('#myModal123').modal('hide');
@@ -263,25 +265,27 @@ document.getElementById("photographdone").addEventListener("click", function() {
 
          setTimeout(function(){
             $('#myModal123').modal('hide');
-            var c = document.getElementById("myCanvas");
-            c.style.display = "block";
-            var ctx = c.getContext("2d");
-            var img = document.getElementById("showimage");
-            ctx.drawImage(img, data_response.info[0].face.left, data_response.info[0].face.top, data_response.info[0].face.width, data_response.info[0].face.height, 0, 0, 150, 150);
-            document.getElementById('noidung').innerHTML = data_response.info[0].name;
-            document.getElementById("showimage").style.height = "auto"
-            
-            document.getElementById("showimage").style.width = "500px"
-            var frame_face = document.getElementById("frame-face")
-            frame_face.style.position = 'absolute';
-            frame_face.style.left = (data_response.info[0].face.left*const_width )/origin_width + "px"
-            frame_face.style.top = (data_response.info[0].face.top*const_width )/origin_width + "px"
-            frame_face.style.height = data_response.info[0].face.height*const_width /origin_width+ "px"
-            frame_face.style.width = (data_response.info[0].face.width*const_width )/origin_width + "px"
-            $(document).ready(function(){
-               $('#frame-face').tooltip({title: data_response.info[0].name}); 
-            });  
-          }, 2000)
+              var img = document.getElementById("showimage");
+               document.getElementById("showimage").style.height = "auto"
+               document.getElementById("showimage").style.width = "500px"
+               for(var i = 0; i < data_response.info.length; i++){
+                  var c = document.getElementById("myCanvas" + i);
+                   c.style.display = "block";
+                   var ctx = c.getContext("2d");
+                   ctx.drawImage(img, data_response.info[i].face.left, data_response.info[i].face.top, data_response.info[i].face.width, data_response.info[i].face.height, 0, 0, 150, 150);
+                   var frame_face = document.getElementById("frame-face" + i)
+                   frame_face.style.position = 'absolute';
+                   frame_face.style.left = (data_response.info[i].face.left*const_width )/origin_width + "px"
+                   frame_face.style.top = (data_response.info[i].face.top*const_width )/origin_width + "px"
+                   frame_face.style.height = data_response.info[i].face.height*const_width /origin_width+ "px"
+                   frame_face.style.width = (data_response.info[i].face.width*const_width )/origin_width + "px"
+                   document.getElementById('noidung' + i).innerHTML = data_response.info[i].name;
+                   $(document).ready(function(){
+                      $('#frame-face' + i).tooltip({title: data_response.info[i].name}); 
+                   });
+                   
+               }    
+          }, 15000)
        }else{
          $('#myModal123').modal('hide');
          setTimeout(function(){

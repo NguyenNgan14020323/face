@@ -54,7 +54,7 @@ router.route('/upload/camera')
                   info: data
                };
                res.send(JSON.stringify(data_response)) 
-               fs.unlinkSync(pathsave); 
+             //  fs.unlinkSync(pathsave); 
           });
         });
     });
@@ -92,7 +92,7 @@ router.route('/uploadimage')
                    console.log(JSON.stringify(data_response));
                    res.send(JSON.stringify(data_response));
                    //xoa file
-                  fs.unlinkSync(newPath);
+                //  fs.unlinkSync(newPath);
               });
             });
       	 		});

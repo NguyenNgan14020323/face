@@ -10,100 +10,119 @@
 </head>
 <body>
 	<%include header%>
-<div class="container">
-	<div id="myModal50600" class="modal fade" role="dialog">
-      <div class="modal-dialog modal-lg">
+	<div class="container">
+		<div id="myModal50600" class="modal fade" role="dialog">
+			<div class="modal-dialog modal-lg">
 
-    <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h3 class="modal-title" style="text-align: center;">Chụp ảnh của bạn</h3>
-          </div>
-
-          <div class="modal-body">
-			   <video id="video" width="640" height="640" autoplay></video></br>
-			   <canvas id="canvas" width="640" height="640" style="display:none;"></canvas></br>
-            <div>
-               <table>
-                  <tr>
-			            <td><button class="btn btn-primary" id="snap">Take Photo</button></br></td>
-			            <td><button  class="btn btn-info" id="restart" style="margin-left: 30%;">Restart</button></br></td>
-                  </tr>
-               </table>
-            </div>
-			
-          </div>
-          <div class="modal-footer">
-		       <button type="button" class="btn btn-success" id = "photographdone">Done</button>
-             <button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
-			
-          </div>
-       </div>
-
-      </div>
-    </div>
-
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" role="dialog">
-	    <div class="modal-dialog">
-	      <!-- Modal content-->
-	      <div class="modal-content">
-	        <div class="modal-header">
-	          <h4 class="modal-title">Progress downloading</h4>
-	        </div>
-	        <div class="modal-body">
-			     <p id = "showpercent"></p>
-				 <div class="progress">
-					<div id = "progressdownload" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:70%">
-						0%</div>
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h3 class="modal-title" style="text-align: center;">Chụp ảnh của bạn</h3>
 					</div>
-	        </div>
-	      </div>
-		</div>
-	</div>
 
-	<!-- Modal -->
-	<div class="modal fade" id="myModal123" role="dialog">
-	    <div class="modal-dialog">
-	      <!-- Modal content-->
-	      <div class="modal-content">
-	        <div class="modal-header">
-	          <h4 class="modal-title">Dang tien hanh xu li</h4>
-	        </div>
-	        <div class="modal-body">
-			   <ul class="fa-ul">
-				 <li><i class="fa-li fa fa-spinner fa-spin"></i>..............</li>
-	 			</ul>
-	        </div>
-	      </div>
-		</div>
-	</div>
+					<div class="modal-body">
+						<video id="video" width="640" height="640" autoplay></video></br>
+						<canvas id="canvas" width="640" height="640" style="display:none;"></canvas></br>
+						<div>
+							<table>
+								<tr>
+									<td><button class="btn btn-primary" id="snap">Take Photo</button></br></td>
+									<td><button  class="btn btn-info" id="restart" style="margin-left: 30%;">Restart</button></br></td>
+								</tr>
+							</table>
+						</div>
 
-	<div class="col-sm-6">
-	   <h3>Anh dep</h3>  
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success" id = "photographdone">Done</button>
+						<button type="button" class="btn btn-default"  data-dismiss="modal">Close</button>
 
+					</div>
+				</div>
 
-	    <div style="position: absolute;height: auto;">
-			<img src="/image/19511307_927742830728587_7917739276118567175_n.jpg" class="img-rounded" id = "showimage"  alt="Anh khong ton tai" style="width: 500px; height: auto;"></br>
-			<div id="frame-face" style="position: absolute;border: 1px solid red;" >
 			</div>
 		</div>
-		</br><button type="button"  style="position: absolute;margin-top: 400px;" id = "buttonimage" class="btn btn-primary">Chon file</button>
-	</br><button type="button"  style="position: absolute;margin-top: 420px;" id = "buttonimage1" class="btn btn-primary">Chup camera</button>
-		
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Progress downloading</h4>
+					</div>
+					<div class="modal-body">
+						<p id = "showpercent"></p>
+						<div class="progress">
+							<div id = "progressdownload" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+							0%</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal123" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Dang tien hanh xu li</h4>
+					</div>
+					<div class="modal-body">
+						<ul class="fa-ul">
+							<li><i class="fa-li fa fa-spinner fa-spin"></i>..............</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<div class="col-sm-6">
+		<h3>Anh dep</h3>  
+			<div style="position: absolute;height: auto;">
+				<img src="/image/images.jpeg" class="img-rounded" id = "showimage"  alt="Vui long chon anh" style="width: 500px; height: auto;"></br>
+				<div id="frame-face0" style="position: absolute;border: 1px solid red;" >
+				</div>
+				<div id="frame-face1" style="position: absolute;border: 1px solid blue;" >
+				</div>
+				<div id="frame-face2" style="position: absolute;border: 1px solid blue;" >
+				</div>
+				<div id="frame-face3" style="position: absolute;border: 1px solid blue;" >
+				</div>
+				<div id="frame-face4" style="position: absolute;border: 1px solid blue;" >
+				</div>
+				<div id="frame-face5" style="position: absolute;border: 1px solid blue;" >
+				</div>
+			
+			<button type="button"  style="margin-top: 50px;" id = "buttonimage" class="btn btn-primary">Chon file</button>
+			<button type="button"  style="margin-top: 50px; margin-left: 100px" id = "buttonimage1" class="btn btn-primary">Chup camera</button>
+
 		<form id="uploadFormimage" enctype="multipart/form-data" action="/uploadimage" method="post" >
 			<input type="file" name = "imageupload" style="display:none;" id="uploadimage">
-            <input type="submit" value="" id="submitbuttonimage" style="display: none;">
-        </form>
+			<input type="submit" value="" id="submitbuttonimage" style="display: none;">
+		</form>
+		</div>
 	</div>
 	<div class="col-sm-6">	
-	   	<h3>Nhan dien</h3>            
+		<h3>Nhan dien</h3>            
 		<!-- <img src="/image/22365563_1930857927166483_4334794998412523524_n.jpg" class="img-rounded" id = "showimage"  alt="Anh khong ton tai" style="height:auto;width:200px"></br> -->
-		<canvas id="myCanvas" class="img-rounded" width="150" height="150" style="display: none; border:1px solid #d3d3d3;">
-		Your browser does not support the HTML5 canvas tag.</canvas>   
+		<canvas id="myCanvas0" class="img-rounded" width="150" height="150" style="display: none; border:1px solid #d3d3d3;">
+			Your browser does not support the HTML5 canvas tag.</canvas>  	<p id="noidung0"></p></br>
+			<canvas id="myCanvas1" class="img-rounded" width="150" height="150" style="display: none; border:1px solid #d3d3d3;">
+			Your browser does not support the HTML5 canvas tag.</canvas>  <p id="noidung1"></p> </br>
+			<canvas id="myCanvas2" class="img-rounded" width="150" height="150" style="display: none; border:1px solid #d3d3d3;">
+			Your browser does not support the HTML5 canvas tag.</canvas>   <p id="noidung2"></p></br>
+			<canvas id="myCanvas3" class="img-rounded" width="150" height="150" style="display: none; border:1px solid #d3d3d3;">
+			Your browser does not support the HTML5 canvas tag.</canvas>   <p id="noidung3"></p></br>
+			<canvas id="myCanvas4" class="img-rounded" width="150" height="150" style="display: none; border:1px solid #d3d3d3;">
+			Your browser does not support the HTML5 canvas tag.</canvas>   <p id="noidung4"></p></br>
+			<canvas id="myCanvas5" class="img-rounded" width="150" height="150" style="display: none; border:1px solid #d3d3d3;">
+			Your browser does not support the HTML5 canvas tag.</canvas>   <p id="noidung5"></p></br>
 		</br>
-		<p id="noidung"></p>
+	
 	</div>    
 </div>
 <script src="/js/processimg.js"></script>
