@@ -56,8 +56,9 @@ function recognize(imageUrl, cb) {
   var detectedFaces = detect(imageUrl);
 
   if (!detectedFaces || detectedFaces.length == 0) {
-    console.log("Can't detect any face");
-    return;
+     console.log("Can't detect any face");
+     cb("");//tra ve du lieu
+     return;
   }
 
   var identifiedResult = identify(detectedFaces.map(face => face.faceId));

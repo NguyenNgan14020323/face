@@ -76,14 +76,14 @@ router.route('/uploadimage')
     			var dirname = path.resolve(__dirname, "..");
       	 		var newPath = dirname + "/public/image/"  + imageName;
       	 		var response_path = "/image/" + imageName
+
       	 		fs.writeFile(newPath, data, function (err) {
       				if(err){
           		   		return res.end("Error uploading file.");
         		  	}
-      	 		});
 
-      	 		cloudinary.uploader.upload(newPath, function(result) {
-               utils.recognize(result.url, (data) => {
+                cloudinary.uploader.upload(newPath, function(result) {
+                utils.recognize(result.url, (data) => {
                    var data_response = {
                      url: result.url, 
                      image_height: result.height,
@@ -94,6 +94,7 @@ router.route('/uploadimage')
                    //xoa file
                   fs.unlinkSync(newPath);
               });
+            });
       	 		});
     		}
 
