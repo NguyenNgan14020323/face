@@ -20,9 +20,9 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname,'views'));
 //config cloudary
 cloudinary.config({
-  cloud_name: 'uet',
-  api_key: '992147968271347',
-  api_secret: 'M9TfXOrwtKx0SklY5wOrxPJv-MU'
+  cloud_name: 'trungthao',
+  api_key: '956915582682937',
+  api_secret: 'Z7DE5XfpeRLKLQqA1-FiuvTGa5Q'
 });
 
 app.use(express.static(__dirname + '/public'))

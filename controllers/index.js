@@ -64,7 +64,6 @@ router.route('/upload/camera')
 
 router.route('/uploadimage')
 .post(multipartMiddleware, function(req, res){
-  var a;
 	if(req.files){
 		fs.readFile(req.files.imageupload.path, function (err, data)
       	{
@@ -90,7 +89,8 @@ router.route('/uploadimage')
                      image_width: result.width,
                      info: data
                    };
-                   res.send(JSON.stringify(data_response)) 
+                   console.log(JSON.stringify(data_response));
+                   res.send(JSON.stringify(data_response));
                    //xoa file
                   fs.unlinkSync(newPath);
               });
